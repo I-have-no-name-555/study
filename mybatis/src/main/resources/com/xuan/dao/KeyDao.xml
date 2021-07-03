@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuan.dao.KeyDao">
+
+    <select id="getKeyById" resultMap="myKey">
+        select k.id, k.key_name, l.id lid, l.lock_name
+        from t_key k
+                 left join t_lock l on k.lock_id = l.id
+        where k.id = #{id}
+    </select>
+    <select id="getKeyByIdSimple" resultMap="keySimple">
+        select *
+        from t_key
+        where id = #{id}
+    </select>
+    <select id="getKeysByLockId" resultType="com.xuan.bean.Key">
+        select *
+        from t_key
+        where lock_id = #{lockId}
+    </select>
+    <resultMap id="keySimple" type="com.xuan.bean.Key">
+        <id property="id" column="id"/>
+        <result property="keyName" column="key_name"/>
+        <association property="lock"
+                     select="com.xuan.dao.LockDao.getLockByIdSimple"
+                     column="lock_id" fetchType="eager"/>
+    </resultMap>
+    <resultMap id="myKey" type="com.xuan.bean.Key">
+        <id column="id" property="id"/>
+        <result property="keyName" column="key_name"/>
+        <!--        <result property="lock.id" column="lid"/>-->
+        <!--        <result property="lock.lockName" column="lock_name"/>-->
+        <association property="lock" javaType="com.xuan.bean.Lock">
+            <id property="id" column="lid"/>
+            <result property="lockName" column="lock_name"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

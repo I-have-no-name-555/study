@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuan.dao.EmployeeDao">
+    <cache readOnly="true" type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <insert id="insertEmployee" statementType="PREPARED" useGeneratedKeys="true" keyProperty="id">
+        insert into t_employee(emp_name, gender, email)
+        values (#{empName}, #{gender}, #{email})
+    </insert>
+    <update id="updateEmployee">
+        update t_employee
+        set emp_name = #{empName},
+            gender=#{gender},
+            email=#{email}
+        where id = #{id}
+    </update>
+    <delete id="deleteEmployee">
+        delete
+        from t_employee
+        where id = #{id}
+    </delete>
+    <select id="getEmployeeById" resultMap="emp">
+        select *
+        from t_employee
+        where id = #{id}
+    </select>
+    <select id="getEmployeeByIdAndName" resultType="com.xuan.bean.Employee" useCache="true">
+        select *
+        from t_employee
+        where id = #{id}
+          and emp_name = #{empName}
+    </select>
+    <select id="getAllEmployees" resultType="com.xuan.bean.Employee">
+        select *
+        from t_employee
+    </select>
+    <select id="getEmployeeByIdReturnMap" resultType="java.util.Map">
+        select *
+        from t_employee
+        where id = #{id}
+    </select>
+    <select id="getAllEmployeeMap" resultType="com.xuan.bean.Employee">
+        select *
+        from t_employee
+    </select>
+
+    <resultMap id="emp" type="com.xuan.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="emp_name" property="empName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+    </resultMap>
+
+</mapper>

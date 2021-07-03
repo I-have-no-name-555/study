@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuan.dao.TeacherDao">
+    <sql id="selectAll">
+        select *
+        from t_teacher
+
+    </sql>
+    <update id="updateTeacher">
+        update t_teacher
+        <set>
+            <if test="teacherName!=null and !teacherName.equals(&quot;&quot;)">
+                teacher_name = #{teacherName},
+            </if>
+            <if test="className!=null and !className.equals(&quot;&quot;)">
+                class_name = #{className},
+            </if>
+            <if test="address!=null and !address.equals(&quot;&quot;)">
+                address = #{address}
+            </if>
+            <if test="birthDate!=null ">
+                birth_date = #{birthDate}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <select id="getTeacherById" resultMap="myTeacher">
+<include refid="selectAll"/>
+        where id = #{id}
+    </select>
+    <select id="listTeacherByCondition" resultMap="myTeacher">
+        select * from t_teacher
+        <!--                <where>需要把and放在前面</where>-->
+        <trim prefix="where" prefixOverrides="and"
+              suffix="" suffixOverrides="and">
+            <if test="id!=null">
+                id >= #{id} and
+            </if>
+            <if test="teacherName!=null and !teacherName.equals('')">
+                teacher_name like #{teacherName} and
+            </if>
+            <if test="birthDate!=null">
+                birth_date &lt; #{birthDate}
+            </if>
+        </trim>
+
+
+    </select>
+    <select id="listTeacherIn" resultMap="myTeacher">
+        select * from t_teacher where id in
+        <foreach collection="ids" item="id_item" separator=","
+                 open="(" close=")" index="i">
+            # index在集合为map时表示键，此时item为值
+            #{id_item}
+        </foreach>
+    </select>
+    <select id="listTeacherByConditionChoose" resultMap="myTeacher">
+        <include refid="selectAll"/>
+        <where>
+            <choose>
+                <when test="id!=null">
+                    id=#{id}
+                </when>
+                <when test="teacherName!=null and !teacherName.equals(&quot;&quot;)">
+                    teacher_name=#{teacherName}
+                </when>
+                <when test="birthDate!=null">
+                    birth_date=#{birthDate}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <resultMap id="myTeacher" type="com.xuan.bean.Teacher">
+        <id property="id" column="id"/>
+        <result property="address" column="address"/>
+        <result property="className" column="class_name"/>
+        <result property="teacherName" column="teacher_name"/>
+        <result property="birthDate" column="birth_date"/>
+    </resultMap>
+</mapper>
