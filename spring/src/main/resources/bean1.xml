@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p = "http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--    <bean class="bean.Book" id = 'book'>-->
+<!--        <property name="bname" value="《如何让富婆爱上你》"></property>-->
+<!--        <property name="bauthor" value="无名氏"></property>-->
+<!--    </bean>-->
+<!--    <bean id="orders" class="bean.Orders">-->
+<!--        <constructor-arg name="oname" value="电脑"></constructor-arg>-->
+<!--        <constructor-arg name="address" value="China"></constructor-arg>-->
+<!--        <constructor-arg index="0" value="电脑"></constructor-arg>-->
+<!--    </bean>-->
+
+    <bean class="bean.Book" id="book" p:bname="《如何让富婆爱上你》" p:bauthor="无名氏"></bean>
+</beans>
