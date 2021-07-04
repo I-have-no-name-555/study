@@ -18,6 +18,7 @@ public class AckWorker02 {
     public static void main(String[] args) throws IOException, TimeoutException {
         Channel channel = RabbitMqUtil.getChannel();
         System.out.println("worker2 等待接收消息时间较长");
+        channel.basicQos(5);
         channel.basicConsume(QUEUE_NAME, false,
                 (consumerTag, message) -> {
                     SleepUtil.sleep(10);

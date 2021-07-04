@@ -1,6 +1,7 @@
 package com.xuan.rabbitmq.work;
 
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.MessageProperties;
 import com.xuan.rabbitmq.util.RabbitMqUtil;
 
 import java.io.IOException;
@@ -21,7 +22,9 @@ public class AckTask {
         channel.queueDeclare(ACK_QUEUE_NAME,false,false,false,null);
         Scanner in = new Scanner(System.in);
         while (in.hasNext()){
-            channel.basicPublish("", ACK_QUEUE_NAME,null,in.next().getBytes(StandardCharsets.UTF_8));
+//            channel.basicPublish("", ACK_QUEUE_NAME,null,in.next().getBytes(StandardCharsets.UTF_8));
+            channel.basicPublish("", ACK_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN,
+                    in.next().getBytes(StandardCharsets.UTF_8));
         }
     }
 }

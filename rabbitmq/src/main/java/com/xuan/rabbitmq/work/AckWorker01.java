@@ -19,6 +19,7 @@ public class AckWorker01 {
         Channel channel = RabbitMqUtil.getChannel();
         System.out.println("worker1 等待接收消息时间较短");
 
+        channel.basicQos(2);
         channel.basicConsume(QUEUE_NAME, false,
                 (consumerTag, message) -> {
                     SleepUtil.sleep(1);
