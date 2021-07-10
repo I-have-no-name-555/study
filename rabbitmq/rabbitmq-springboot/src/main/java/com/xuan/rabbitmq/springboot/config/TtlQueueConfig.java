@@ -21,6 +21,23 @@ public class TtlQueueConfig {
     public static final String NORMAL_QUEUE_A = "QA";
     public static final String NORMAL_QUEUE_B = "QB";
     public static final String DEAD_QUEUE = "QD";
+    public static final String NORMAL_QUEUE_C = "QC";
+
+    @Bean("normalQueueC")
+    public Queue normalQueueC(){
+        Map<String, Object> arguments = new HashMap<>();
+
+        arguments.put("x-dead-letter-exchange", DEAD_EXCHANGE);
+        arguments.put("x-dead-letter-routing-key", "YD");
+
+        return QueueBuilder.durable(NORMAL_QUEUE_C).withArguments(arguments).build();
+    }
+
+    @Bean
+    public Binding queueCBindingX(@Qualifier("normalQueueC") Queue queueC,
+                                  @Qualifier("normalExchange") DirectExchange exchange){
+        return BindingBuilder.bind(queueC).to(exchange).with("XC");
+    }
 
     @Bean("normalExchange")
     public DirectExchange normalExchange() {
