@@ -34,4 +34,15 @@ public class ProducerController {
                 ConfirmConfig.CONFIRM_ROUTING_KEY, message, correlationData);
         log.info("发送消息内容：{}", message);
     }
+
+    //测试备份交换机，向错误路由发送消息
+    @GetMapping("/sendMessage/{message}")
+    public void sendMessage(@PathVariable String message) {
+
+        CorrelationData correlationData = new CorrelationData();
+
+        rabbitTemplate.convertAndSend(ConfirmConfig.CONFIRM_EXCHANGE,
+                ConfirmConfig.CONFIRM_ROUTING_KEY + 2, message, correlationData);
+        log.info("发送消息内容：{}", message);
+    }
 }
