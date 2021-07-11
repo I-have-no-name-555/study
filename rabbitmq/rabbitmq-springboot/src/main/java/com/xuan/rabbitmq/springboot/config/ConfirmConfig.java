@@ -1,0 +1,32 @@
+package com.xuan.rabbitmq.springboot.config;
+
+import org.springframework.amqp.core.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @author :Xuan
+ * @date :Create in 2021/7/11 16:04
+ * @description 发布确认高级 配置类
+ */
+@Configuration
+public class ConfirmConfig {
+    public static final String CONFIRM_EXCHANGE = "confirm.exchange";
+    public static final String CONFIRM_QUEUE = "confirm.queue";
+    public static final String CONFIRM_ROUTING_KEY = "confirm.key";
+
+    @Bean
+    public DirectExchange confirmExchange() {
+        return new DirectExchange(CONFIRM_EXCHANGE);
+    }
+
+    @Bean
+    public Queue confirmQueue() {
+        return QueueBuilder.durable(CONFIRM_QUEUE).build();
+    }
+
+    @Bean
+    public Binding queueBindingExchange() {
+        return BindingBuilder.bind(confirmQueue()).to(confirmExchange()).with(CONFIRM_ROUTING_KEY);
+    }
+}
